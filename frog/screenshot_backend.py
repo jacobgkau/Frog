@@ -48,16 +48,16 @@ class ScreenshotBackend(GObject.GObject):
 
         self.bus = SessionBus()
         self.cancelable = Gio.Cancellable.new()
-        self.proxy = self.bus.get("org.gnome.Shell.Screenshot",
-                                  "/org/gnome/Shell/Screenshot")
+        self.proxy = self.bus.get("org.kde.Spectacle",
+                                  "/org/kde/Spectacle")
 
     def capture(self, lang: str) -> Optional[str]:
         if not self.proxy:
             return
-        x, y, width, height = self.proxy.SelectArea()
+        x, y, width, height = self.proxy.RectangularRegion()
         # print(f'SELECTED_AREA: {x}:{y} of {width}:{height}')
 
-        result, filename = self.proxy.ScreenshotArea(x, y, width, height, True, 'frog-text-recognition')
+        result, filename = self.proxy.RectangularRegion(x, y, width, height, True, 'frog-text-recognition')
 
         if result:
             # Simple image to string
